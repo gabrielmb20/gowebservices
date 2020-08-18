@@ -6,6 +6,7 @@ option go_package = "github.com/golang/protobuf/ptypes/any";
 service BookInfo {
   rpc addBook(Book) returns (BookID);
   rpc getBook(BookID) returns (Book);
+  rpc deleteBook(BookID) returns (Book);
 }
 
 message Book {
