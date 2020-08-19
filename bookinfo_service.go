@@ -34,7 +34,7 @@ func (s *server) GetBook(ctx context.Context, in *pb.BookID) (*pb.Book, error) {
     return nil, status.Errorf(codes.NotFound, "Book does not exist.", in.Value)
 }
 
-func (s *server) deleteBook(ctx context.Context, in *pb.BookID) (*pb.BookID, error) {
+func (s *server) DeleteBook(ctx context.Context, in *pb.BookID) (*pb.BookID, error) {
     _, exists := s.bookMap[in.Value]
     if exists {
 	delete(s.bookMap, in.Value)

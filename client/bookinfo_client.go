@@ -18,6 +18,7 @@ func main() {
     defer conn.Close()
     c := pb.NewBookInfoClient(conn)
 
+    // Agregar libro
     ctx, cancel := context.WithTimeout(context.Background(), time.Second)
     defer cancel()
     r, err := c.AddBook(ctx, &pb.Book{
@@ -30,20 +31,28 @@ func main() {
         Author:    "Abraham Silberschatz",
         Publisher: "John Wiley & Sons"})
     if err != nil {
-        log.Fatalf("Could not add book: %v", err)
+        log.Fatalf("\n\nNo se pudo agregar el libro: %v", err)
     }
 
-    log.Printf("Book ID: %s added successfully", r.Value)
+    // Obtener libro
+    log.Printf("\n\nLibro creado ID: %s", r.Value)
     book, err := c.GetBook(ctx, &pb.BookID{Value: r.Value})
     if err != nil {
-        log.Fatalf("Could not get book: %v", err)
+        log.Fatalf("\n\nEl libro consultado no existe: %v", err)
     }
-    log.Printf("Book: ", book.String())
+    log.Printf("\n\nLibro consultado: ", book.String())
 
+    // Eliminar libro
     bookDel, err := c.DeleteBook(ctx, &pb.BookID{Value: r.Value})
     if err != nil {
-        log.Fatalf("Could not delete book: %v", err)
+        log.Fatalf("\n\nNo se pudo eliminar el libro: %v", err)
     }
-    log.Printf("Book2: ", bookDel.String())
+    log.Printf("\n\nLibro eliminado: ", bookDel.String())
 
+    // Obtener libro nuevamente para comprobar si se elimino
+    bookGet, err := c.GetBook(ctx, &pb.BookID{Value: r.Value})
+    if err != nil {
+        log.Fatalf("\n\nEl libro consultado no existe: %v", err)
+    }
+    log.Printf("\n\nLibro consultado: ", bookGet.String())
 }
