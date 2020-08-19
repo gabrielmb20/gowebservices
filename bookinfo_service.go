@@ -13,12 +13,13 @@ type server struct {
 }
 
 func (s *server) AddBook(ctx context.Context, in *pb.Book) (*pb.BookID, error) {
-    out, err := uuid.NewV4()
+    //out, err := uuid.NewV4()
+    _, err := uuid.NewV4()
     if err != nil {
         return nil, status.Errorf(codes.Internal,
             "Error while generating Book ID", err)
     }
-    in.Id = out.String()
+    //in.Id = out.String()
     if s.bookMap == nil {
         s.bookMap = make(map[string]*pb.Book)
     }
@@ -43,3 +44,16 @@ func (s *server) DeleteBook(ctx context.Context, in *pb.BookID) (*pb.BookID, err
     return nil, status.Errorf(codes.NotFound, "Book does not exist.", in.Value)
 }
 
+func (s *server) UpdateBook(ctx context.Context, in *pb.Book) (*pb.BookID, error) {
+   // out, err := uuid.NewV4()
+   // if err != nil {
+   //     return nil, status.Errorf(codes.Internal,
+   //         "Error while generating Book ID", err)
+   // }
+   // in.Id = out.String()
+    if s.bookMap == nil {
+        s.bookMap = make(map[string]*pb.Book)
+    }
+    s.bookMap[in.Id] = in
+    return &pb.BookID{Value: in.Id}, status.New(codes.OK, "").Err()
+}
