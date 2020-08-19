@@ -262,8 +262,8 @@ var file_books_info_proto_rawDesc = []byte{
 	0x1a, 0x10, 0x2e, 0x62, 0x6f, 0x6f, 0x6b, 0x73, 0x61, 0x70, 0x70, 0x2e, 0x42, 0x6f, 0x6f, 0x6b,
 	0x49, 0x44, 0x12, 0x2d, 0x0a, 0x0b, 0x52, 0x65, 0x61, 0x64, 0x43, 0x73, 0x76, 0x46, 0x69, 0x6c,
 	0x65, 0x12, 0x0e, 0x2e, 0x62, 0x6f, 0x6f, 0x6b, 0x73, 0x61, 0x70, 0x70, 0x2e, 0x46, 0x69, 0x6c,
-	0x65, 0x1a, 0x0e, 0x2e, 0x62, 0x6f, 0x6f, 0x6b, 0x73, 0x61, 0x70, 0x70, 0x2e, 0x46, 0x69, 0x6c,
-	0x65, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x65, 0x1a, 0x0e, 0x2e, 0x62, 0x6f, 0x6f, 0x6b, 0x73, 0x61, 0x70, 0x70, 0x2e, 0x42, 0x6f, 0x6f,
+	0x6b, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -294,7 +294,7 @@ var file_books_info_proto_depIdxs = []int32{
 	0, // 6: booksapp.BookInfo.getBook:output_type -> booksapp.Book
 	1, // 7: booksapp.BookInfo.deleteBook:output_type -> booksapp.BookID
 	1, // 8: booksapp.BookInfo.updateBook:output_type -> booksapp.BookID
-	2, // 9: booksapp.BookInfo.ReadCsvFile:output_type -> booksapp.File
+	0, // 9: booksapp.BookInfo.ReadCsvFile:output_type -> booksapp.Book
 	5, // [5:10] is the sub-list for method output_type
 	0, // [0:5] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
@@ -381,7 +381,7 @@ type BookInfoClient interface {
 	GetBook(ctx context.Context, in *BookID, opts ...grpc.CallOption) (*Book, error)
 	DeleteBook(ctx context.Context, in *BookID, opts ...grpc.CallOption) (*BookID, error)
 	UpdateBook(ctx context.Context, in *Book, opts ...grpc.CallOption) (*BookID, error)
-	ReadCsvFile(ctx context.Context, in *File, opts ...grpc.CallOption) (*File, error)
+	ReadCsvFile(ctx context.Context, in *File, opts ...grpc.CallOption) (*Book, error)
 }
 
 type bookInfoClient struct {
@@ -428,8 +428,8 @@ func (c *bookInfoClient) UpdateBook(ctx context.Context, in *Book, opts ...grpc.
 	return out, nil
 }
 
-func (c *bookInfoClient) ReadCsvFile(ctx context.Context, in *File, opts ...grpc.CallOption) (*File, error) {
-	out := new(File)
+func (c *bookInfoClient) ReadCsvFile(ctx context.Context, in *File, opts ...grpc.CallOption) (*Book, error) {
+	out := new(Book)
 	err := c.cc.Invoke(ctx, "/booksapp.BookInfo/ReadCsvFile", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -443,7 +443,7 @@ type BookInfoServer interface {
 	GetBook(context.Context, *BookID) (*Book, error)
 	DeleteBook(context.Context, *BookID) (*BookID, error)
 	UpdateBook(context.Context, *Book) (*BookID, error)
-	ReadCsvFile(context.Context, *File) (*File, error)
+	ReadCsvFile(context.Context, *File) (*Book, error)
 }
 
 // UnimplementedBookInfoServer can be embedded to have forward compatible implementations.
@@ -462,7 +462,7 @@ func (*UnimplementedBookInfoServer) DeleteBook(context.Context, *BookID) (*BookI
 func (*UnimplementedBookInfoServer) UpdateBook(context.Context, *Book) (*BookID, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateBook not implemented")
 }
-func (*UnimplementedBookInfoServer) ReadCsvFile(context.Context, *File) (*File, error) {
+func (*UnimplementedBookInfoServer) ReadCsvFile(context.Context, *File) (*Book, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ReadCsvFile not implemented")
 }
 
