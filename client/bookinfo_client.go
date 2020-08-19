@@ -40,9 +40,10 @@ func main() {
     }
     log.Printf("Book: ", book.String())
 
-    book, err := c.DeleteBook(ctx, &pb.BookID{Value: r.Value})
+    bookDel, err := c.DeleteBook(ctx, &pb.BookID{Value: r.Value})
     if err != nil {
         log.Fatalf("Could not delete book: %v", err)
     }
+    log.Printf("Book2: ", bookDel.String())
 
 }
