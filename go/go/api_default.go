@@ -10,6 +10,7 @@ package swagger
 
 import (
     "encoding/json"
+    "fmt"
     "net/http"
     "path"
 )
